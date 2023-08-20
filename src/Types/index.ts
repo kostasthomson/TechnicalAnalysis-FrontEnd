@@ -9,7 +9,14 @@ export interface CommitsType {
   sha: string;
   date: string;
   files: object[];
-  authorName: string;
   authorId: number;
-  _links: object[];
+  _links: CommitLinkType;
+}
+
+interface LinkType {
+  self: { href: string };
+}
+
+interface CommitLinkType extends LinkType {
+  author: { href: string };
 }
