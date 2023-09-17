@@ -1,48 +1,59 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+import { NodeList } from "./Components";
+
+import { CollaboratorType, CommitsType } from "./Types";
+
 import "./App.css";
 
 function App() {
-  const base_url = "http://localhost:8080/";
+  const host_root = "http://localhost:8080/";
 
-  const [collaboratorList, setCollaboratorList] = useState([]);
-  const [commitList, setCommitList] = useState([]);
+  const [collaborators, setCollaborators] = useState<CollaboratorType[]>([]);
+  const [commits, setCommits] = useState<CommitsType[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [collaboratorsResponse, commitsResponse] = await Promise.all([
-          axios.get(base_url + "collaborators"),
-          axios.get(base_url + "commits"),
-        ]);
-
-        setCollaboratorList(collaboratorsResponse.data._embedded.collaborators);
-        setCommitList(commitsResponse.data._embedded.commits);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
+    Promise.all([
+      axios.get(host_root + "collaborators"),
+      axios.get(host_root + "commits"),
+    ])
+      .then((results) => {
+        setCollaborators(results[0]?.data);
+        setCommits(results[1]?.data);
+      })
+      .catch((error) => console.log("Error fetching data...:" + error));
   }, []);
 
-  useEffect(() => {
-    if (collaboratorList.length > 0 && commitList.length > 0) {
-      const mapper: Map<String, never[]> = new Map();
-      collaboratorList.forEach((collaborator: any) => {
-        mapper.set(
-          collaborator.stringId,
-          commitList.filter((commit: any) => {
-            return commit.authorId === collaborator.stringId;
-          })
-        );
-      });
-      console.log(mapper);
-    }
-  }, [collaboratorList, commitList]);
-
-  return <div className="App"></div>;
+  collaborators.forEach((c) => (c.label = `${c.id} / ${c.name}`));
+  commits.forEach(
+    (c) =>
+      (c.label = `${c.authorId} / ${new Date(c.date).toLocaleDateString(
+        "el-GR",
+        {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        }
+      )}`)
+  );
+  return (
+    <div className="App">
+      {
+        //TODO: ADD VISUAL RELATIONSHIPS
+      }
+      <NodeList
+        data={collaborators}
+        wrapperClasses="bg-green-500"
+        labelClasses="text-white"
+      />
+      <NodeList
+        data={commits}
+        wrapperClasses="bg-yellow-400"
+        labelClasses="text-white"
+      />
+    </div>
+  );
 }
 
 export default App;
