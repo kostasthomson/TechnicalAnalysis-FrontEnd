@@ -1,59 +1,51 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-
-import { NodeList } from "./Components";
-
-import { CollaboratorType, CommitsType } from "./Types";
-
+import React from "react";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import "./App.css";
+import Analysis from "./Pages/Analysis";
+import Home from "./Pages/Home";
+
+//todo: add data manipulation: fetch -> organize -> render
+export type File = {
+	node_id: string;
+	name: string;
+	path: string;
+	java: boolean;
+	complexity: number;
+	loc: number;
+	td: number;
+};
+export type Author = {
+	email: string;
+	name: string;
+};
+export type Commit = {
+	sha: string;
+	message: string;
+	date: string;
+	author: Author;
+	complexity: number;
+	loc: number;
+	td: number;
+	tags: string[];
+	files: File[];
+};
+export type DataType = {
+	key: string;
+	value: Commit[];
+};
 
 function App() {
-  const host_root = "http://localhost:8080/";
-
-  const [collaborators, setCollaborators] = useState<CollaboratorType[]>([]);
-  const [commits, setCommits] = useState<CommitsType[]>([]);
-
-  useEffect(() => {
-    Promise.all([
-      axios.get(host_root + "collaborators"),
-      axios.get(host_root + "commits"),
-    ])
-      .then((results) => {
-        setCollaborators(results[0]?.data);
-        setCommits(results[1]?.data);
-      })
-      .catch((error) => console.log("Error fetching data...:" + error));
-  }, []);
-
-  collaborators.forEach((c) => (c.label = `${c.id} / ${c.name}`));
-  commits.forEach(
-    (c) =>
-      (c.label = `${c.authorId} / ${new Date(c.date).toLocaleDateString(
-        "el-GR",
-        {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        }
-      )}`)
-  );
-  return (
-    <div className="App">
-      {
-        //TODO: ADD VISUAL RELATIONSHIPS
-      }
-      <NodeList
-        data={collaborators}
-        wrapperClasses="bg-green-500"
-        labelClasses="text-white"
-      />
-      <NodeList
-        data={commits}
-        wrapperClasses="bg-yellow-400"
-        labelClasses="text-white"
-      />
-    </div>
-  );
+	return (
+		<BrowserRouter>
+			<header className="w-full h-20 flex items-center ps-20 pe-20 text-2xl font-bold bg-blue-500 text-white">
+				<h1>TDTM</h1>
+			</header>
+			<Routes>
+				<Route index element={<Home />} />
+				<Route path="analysis/*" element={<Analysis />} />
+			</Routes>
+		</BrowserRouter>
+	);
 }
 
 export default App;
