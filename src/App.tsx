@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Analysis from "./Pages/Analysis";
 import Home from "./Pages/Home";
@@ -31,6 +31,7 @@ export type Commit = {
 };
 export type DataType = {
 	key: string;
+	maxTd: number;
 	value: Commit[];
 };
 

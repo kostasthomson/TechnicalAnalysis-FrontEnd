@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import Graph from "react-vis-network-graph";
-import { Commit, Author, File} from "../../App";
+import { Commit, Author, File } from "../../App";
 
 export interface GraphNode extends Commit, Author, File {
 	id: number;
@@ -16,7 +16,7 @@ export type GraphType = {
 	edges: GraphEdge[],
 };
 
-function Network({ className, data, index, setSelectedNode }) {
+function Network({ className, data, maxTd, setSelectedNode }) {
 	const options = {
 		autoResize: true,
 		groups: {
@@ -64,15 +64,9 @@ function Network({ className, data, index, setSelectedNode }) {
 	const createGraph = () => {
 		let nodes: GraphNode[] = [];
 		let edges: GraphEdge[] = [];
-		const indexedData = data[index].value;
+		const td = maxTd ? maxTd : data.maxTd;
+		const indexedData = data.value;
 		indexedData.forEach((commit) => {
-			// create commit node
-			// nodes.push({
-			// 	id: commit.sha,
-			// 	label: commit.message,
-			// 	group: "commits",
-			// 	...commit,
-			// });
 			// create author node
 			const author = commit.author;
 			nodes.push({
@@ -81,25 +75,22 @@ function Network({ className, data, index, setSelectedNode }) {
 				group: "authors",
 				...author,
 			});
-			// edges.push({
-			// 	from: author.email,
-			// 	to: commit.sha,
-			// });
 			// create file node
 			commit.files.forEach((file, id) => {
+				const bg = td !== 0 ? 255 - (file.td * 255 / td) : 0;
 				nodes.push({
 					id: file.node_id,
 					label: file.name,
 					group: "files",
+					color: { background: `rgb(255,${bg},${bg})` },
 					...file,
 				});
-				// edges.push({ from: commit.sha, to: file.node_id });
 				edges.push({ from: author.email, to: file.node_id });
 			});
 		});
 		return { nodes, edges };
 	};
-	const { nodes, edges } = useMemo(createGraph, [data, index]);
+	const { nodes, edges } = useMemo(createGraph, [data, maxTd]);
 	const [network, setNetwork] = useState(null);
 	if (network) {
 		network.fit();

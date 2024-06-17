@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dashboard, NewAnalysisModal } from "../Components";
 import { Button } from "@mui/material";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { RecordType } from "../Types/RecordType";
 import { createTheme, alpha, ThemeProvider } from "@mui/material/styles";
+import { GetProjectsCallout } from "../Utils/Callouts";
+import { createRow } from "../Utils/Utils";
 
 // Augment the palette to include a violet color
 declare module "@mui/material/styles" {
@@ -44,18 +46,32 @@ const theme = createTheme({
 });
 
 function Home() {
-	const [rows, setRows] = useState<RecordType[]>([]); //todo: add localStorage
+	const [rows, setRows] = useState<RecordType[] | null>(null);
 	const [openModal, setOpenModal] = useState<boolean>(false);
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [, setIsLoading] = useState<boolean>(false);
 	const handleAddNewClick = () => {
 		setOpenModal(true);
 	};
+
+	useEffect(() => {
+		GetProjectsCallout()
+			.then((result) => {
+				let data = result.data.map((project: any) => {
+					return createRow(project.name, false);
+				});
+				setRows(data);
+			})
+			.catch((error) => {
+				console.log(error);
+				setRows([]);
+			});
+	}, []);
 
 	return (
 		<ThemeProvider theme={theme}>
 			<Button
 				className="w-40 h-12"
-				sx={{ marginTop: "1rem", marginBottom: "1rem", alignSelf: "center" }}
+				sx={{ marginTop: "1rem", marginBottom: "1rem" }}
 				variant="contained"
 				color="blue500"
 				startIcon={<AddOutlinedIcon />}
@@ -70,9 +86,8 @@ function Home() {
 				setRows={setRows}
 				setIsLoading={setIsLoading}
 			/>
-
 			<Dashboard
-				className="w-full h-1/2 flex flex-col items-center overflow-auto"
+				className="w-5/6 h-1/2 flex flex-col items-center overflow-auto"
 				rows={rows}
 				setRows={setRows}
 				setIsLoading={setIsLoading}

@@ -9,7 +9,8 @@ import {
 	TextField,
 } from "@mui/material";
 import { RecordType } from "../../Types/RecordType";
-import { InitialCallout } from "../../Utils/Callouts";
+import { GetInitialCallout } from "../../Utils/Callouts";
+import { createRow } from "../../Utils/Utils";
 
 function NewAnalysisModal({
 	open,
@@ -19,9 +20,9 @@ function NewAnalysisModal({
 	setIsLoading,
 }: {
 	open: boolean;
-	rows: RecordType[];
+	rows: RecordType[] | null;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	setRows: React.Dispatch<React.SetStateAction<RecordType[]>>;
+	setRows: React.Dispatch<React.SetStateAction<RecordType[] | null>>;
 	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
 	const [errorText, setErrorText] = useState<string>("");
@@ -31,14 +32,10 @@ function NewAnalysisModal({
 		setOpen(false);
 	};
 
-	const createRow = (url: string) => {
+	const getRow = (url: string) => {
 		url = url.replace(".git", "");
 		let name: string = url.replace("https://github.com/", "");
-		let actions = [
-			{ label: "view", visible: true },
-			{ label: "retry", visible: false },
-		];
-		return { name, actions, loading: true };
+		return createRow(name);
 	};
 
 	const isValidURL = (input: string) => {
@@ -49,7 +46,8 @@ function NewAnalysisModal({
 	};
 
 	const handleClick = (url: string) => {
-		const newRow = createRow(url);
+		if (!rows) return;
+		const newRow = getRow(url);
 		if (rows.find((value) => value.name === newRow.name)) {
 			setErrorText("Repository already analyzed");
 			return;
@@ -61,14 +59,17 @@ function NewAnalysisModal({
 		const index = rows.length;
 		let newRows = [...rows, newRow];
 		setRows(newRows);
-		InitialCallout()
+		GetInitialCallout()
 			.then((response) => {
 				console.log(response);
 			})
 			.catch((error) => {
 				console.log(error);
-				newRows[index].actions[0].visible = false;
-				newRows[index].actions[1].visible = true;
+				newRows[index].actions.forEach(
+					(action: { label: string; visible: boolean }) => {
+						action.visible = !action.visible;
+					}
+				);
 			})
 			.finally(() => {
 				newRows[index].loading = false;
