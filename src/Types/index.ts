@@ -1,15 +1,5 @@
-export interface CollaboratorType {
-  id: number;
-  name: string;
-  _links: object[];
-}
+import { EntityType } from "./EntityType";
+import { CollaboratorType } from "./CollaboratorType";
+import { CommitsType } from "./CommitsType";
 
-export interface CommitsType {
-  nodeId: string;
-  sha: string;
-  date: string;
-  files: object[];
-  authorName: string;
-  authorId: number;
-  _links: object[];
-}
+export type { EntityType, CollaboratorType, CommitsType };

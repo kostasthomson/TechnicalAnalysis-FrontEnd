@@ -1,40 +1,52 @@
-import React, { useState, useEffect } from "react";
-// import logo from './logo.svg';
-import axios from "axios";
-
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
+import Analysis from "./Pages/Analysis";
+import Home from "./Pages/Home";
 
-import { CollaboratorType, CommitsType } from "./Types";
-
-import CommitList from "./Components/Commit";
-import CollaboratorList from "./Components/Collaborator";
+//todo: add data manipulation: fetch -> organize -> render
+export type File = {
+	node_id: string;
+	name: string;
+	path: string;
+	java: boolean;
+	complexity: number;
+	loc: number;
+	td: number;
+};
+export type Author = {
+	email: string;
+	name: string;
+};
+export type Commit = {
+	sha: string;
+	message: string;
+	date: string;
+	author: Author;
+	complexity: number;
+	loc: number;
+	td: number;
+	tags: string[];
+	files: File[];
+};
+export type DataType = {
+	key: string;
+	maxTd: number;
+	value: Commit[];
+};
 
 function App() {
-  const base_url = "http://localhost:8080/";
-
-  const [collaborators, setCollaborators] = useState<CollaboratorType[]>([]);
-
-  const [commits, setCommits] = useState<CommitsType[]>([]);
-
-  const fetchData = async () => {
-    const col_res = await axios.get(base_url + "collaborators");
-    const com_res = await axios.get(base_url + "commits");
-
-    setCollaborators(col_res.data._embedded.collaborators);
-    setCommits(com_res.data._embedded.commits);
-    return;
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  return (
-    <div className="App">
-      <CollaboratorList data={collaborators} />
-      <CommitList data={commits} />
-    </div>
-  );
+	return (
+		<BrowserRouter>
+			<header className="w-full h-20 flex items-center ps-20 pe-20 text-2xl font-bold bg-blue-500 text-white">
+				<h1>TDTM</h1>
+			</header>
+			<Routes>
+				<Route index element={<Home />} />
+				<Route path="analysis/*" element={<Analysis />} />
+			</Routes>
+		</BrowserRouter>
+	);
 }
 
 export default App;
