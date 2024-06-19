@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Slider, FormControlLabel, Switch } from "@mui/material";
-import { AttributePanel, Network } from "../Components";
+import { AttributePanel, ProjectNetwork } from "../Components";
 import { DataType } from "../App";
-import { GraphNode } from "../Components/Network/Network";
+import { GraphNode } from "../Components/Network/ProjectNetwork";
 import {
 	GetGroupedCommitsCallout,
 	GetProjectMaxTdCallout,
@@ -27,12 +27,14 @@ function Analysis() {
 	useEffect(() => {
 		const projectName = document.location.pathname.replace("/analysis/", "");
 		GetGroupedCommitsCallout(projectName)
-			.then((result: any) => {
+			.then(({ data }: any) => {
+				console.log(data);
 				setData(
-					(result.data as DataType[]).sort(
-						(group1: DataType, group2: DataType) =>
-							new Date(group1.key).getTime() - new Date(group2.key).getTime()
-					)
+					// (result.data as DataType[]).sort(
+					// 	(group1: DataType, group2: DataType) =>
+					// 		new Date(group1.key).getTime() - new Date(group2.key).getTime()
+					// )
+					data
 				);
 			})
 			.catch((error: any) => {
@@ -58,7 +60,9 @@ function Analysis() {
 						className="fixed z-10 top-24 right-4"
 						value="bottom"
 						control={<Switch onChange={handleSwitchChange} />}
-						label={maxTd !== null ? "Max TD (in Project)" : "Max TD (in Commit)"}
+						label={
+							maxTd !== null ? "Max TD (in Project)" : "Max TD (in Commit)"
+						}
 						labelPlacement="bottom"
 					/>
 					<Slider
@@ -76,7 +80,7 @@ function Analysis() {
 						onChange={handleSliderChange}
 					/>
 
-					<Network
+					<ProjectNetwork
 						className="w-full h-full"
 						data={data[sliderValue]}
 						maxTd={maxTd}

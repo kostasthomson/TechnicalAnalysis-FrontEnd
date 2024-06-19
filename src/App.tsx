@@ -13,6 +13,10 @@ export type File = {
 	complexity: number;
 	loc: number;
 	td: number;
+	numFiles: number;
+	commentLines: number;
+	codeSmells: number;
+	functions: number;
 };
 export type Author = {
 	email: string;
@@ -26,8 +30,13 @@ export type Commit = {
 	complexity: number;
 	loc: number;
 	td: number;
+	numFiles: number;
+	commentLines: number;
+	codeSmells: number;
+	functions: number;
 	tags: string[];
 	files: File[];
+	projectName: string;
 };
 export type DataType = {
 	key: string;

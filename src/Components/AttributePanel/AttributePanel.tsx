@@ -17,43 +17,66 @@ function AttributePanel({
 						<p>Email: {selectedNode.email}</p>
 					) : (
 						<>
-							<p className={selectedNode.td ? "" : "italic"}>
-								TD (in minutes):{" "}
-								{selectedNode.td ? selectedNode.td : "<No value>"}
+							<p>Path: {selectedNode.path}</p>
+							<p>
+								TD (in minutes):
+								<span className={selectedNode.td ? "" : "italic"}>
+									{selectedNode.td ? " " + selectedNode.td : " <No value>"}
+								</span>
 							</p>
-							<p className={selectedNode.complexity ? "" : "italic"}>
-								Complexity:{" "}
-								{selectedNode.complexity
-									? selectedNode.complexity
-									: "<No value>"}
+							<p>
+								Complexity:
+								<span className={selectedNode.complexity ? "" : "italic"}>
+									{selectedNode.complexity
+										? " " + selectedNode.complexity
+										: " <No value>"}
+								</span>
 							</p>
-							<p className={selectedNode.codeSmells ? "" : "italic"}>
-								Code smells:{" "}
-								{selectedNode.codeSmells
-									? selectedNode.codeSmells
-									: "<No value>"}
+							<p>
+								Code smells:
+								<span className={selectedNode.codeSmells ? "" : "italic"}>
+									{selectedNode.codeSmells
+										? " " + selectedNode.codeSmells
+										: " <No value>"}
+								</span>
 							</p>
-							<p className={selectedNode.functions ? "" : "italic"}>
-								Functions:{" "}
-								{selectedNode.functions ? selectedNode.functions : "<No value>"}
+							<p>
+								Functions:
+								<span className={selectedNode.functions ? "" : "italic"}>
+									{selectedNode.functions
+										? " " + selectedNode.functions
+										: " <No value>"}
+								</span>
 							</p>
-							<p className={selectedNode.loc ? "" : "italic"}>
-								LOC: {selectedNode.loc ? selectedNode.loc : "<No value>"}
+							<p>
+								LOC:
+								<span className={selectedNode.loc ? "" : "italic"}>
+									{selectedNode.loc ? " " + selectedNode.loc : " <No value>"}
+								</span>
 							</p>
-							<p className={selectedNode.commentLines ? "" : "italic"}>
-								Commented lines:{" "}
-								{selectedNode.commentLines
-									? selectedNode.commentLines
-									: "<No value>"}
+							<p>
+								Commented lines:
+								<span className={selectedNode.commentLines ? "" : "italic"}>
+									{selectedNode.commentLines
+										? " " + selectedNode.commentLines
+										: " <No value>"}
+								</span>
 							</p>
-							<p className={selectedNode.numFiles ? "" : "italic"}>
-								Number of files:{" "}
-								{selectedNode.numFiles ? selectedNode.numFiles : "<No value>"}
+							<p>
+								Number of files:
+								<span className={selectedNode.numFiles ? "" : "italic"}>
+									{selectedNode.numFiles
+										? " " + selectedNode.numFiles
+										: " <No value>"}
+								</span>
 							</p>
-							<p className={selectedNode.tags ? "" : "italic"}>
-								{" "}
-								Tags:{" "}
-								{selectedNode.tags ? selectedNode.tags.join(", ") : "<No tags>"}
+							<p>
+								Tags:
+								<span className={selectedNode.tags ? "" : "italic"}>
+									{selectedNode.tags
+										? " " + selectedNode.tags.join(", ")
+										: " <No tags>"}
+								</span>
 							</p>
 						</>
 					)}

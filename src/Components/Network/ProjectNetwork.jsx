@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Graph from "react-vis-network-graph";
 import { Commit, Author, File } from "../../App";
 
@@ -16,8 +16,11 @@ export type GraphType = {
 	edges: GraphEdge[],
 };
 
-function Network({ className, data, maxTd, setSelectedNode }) {
+function ProjectNetwork({ className, data, maxTd, setSelectedNode }) {
+	console.log(data);
 	const options = {
+		width: "100%",
+		height: "100%",
 		autoResize: true,
 		groups: {
 			authors: { color: { background: "cyan" } },
@@ -25,15 +28,14 @@ function Network({ className, data, maxTd, setSelectedNode }) {
 			files: { color: { background: "yellow" } },
 		},
 		layout: {
-			improvedLayout: true,
+			randomSeed: "0.4921169730930408:1718737341350",
 			hierarchical: {
 				enabled: true,
-				levelSeparation: 200,
-				treeSpacing: 250,
-				nodeSpacing: 350,
+				levelSeparation: 100,
+				treeSpacing: 150,
+				nodeSpacing: 150,
 				blockShifting: true,
 				edgeMinimization: true,
-				direction: "LR",
 				sortMethod: "directed",
 				shakeTowards: "roots",
 			},
@@ -43,13 +45,14 @@ function Network({ className, data, maxTd, setSelectedNode }) {
 			maxVelocity: 20,
 			solver: "hierarchicalRepulsion",
 			hierarchicalRepulsion: {
-				nodeDistance: 70,
+				nodeDistance: 150,
 				springLength: 100,
 				springConstant: 0.06,
 				damping: 0.17,
 			},
 			stabilization: {
 				enabled: true,
+				fit: true,
 			},
 		},
 	};
@@ -69,44 +72,52 @@ function Network({ className, data, maxTd, setSelectedNode }) {
 		indexedData.forEach((commit) => {
 			// create author node
 			const author = commit.author;
-			nodes.push({
-				id: author.email,
-				label: author.name,
-				group: "authors",
-				...author,
-			});
+			if (!nodes.find((value) => value.id === author.email)) {
+				nodes.push({
+					id: author.email,
+					label: author.name,
+					group: "authors",
+					...author,
+				});
+			}
 			// create file node
 			commit.files.forEach((file, id) => {
-				const bg = td !== 0 ? 255 - (file.td * 255 / td) : 0;
-				nodes.push({
-					id: file.node_id,
-					label: file.name,
-					group: "files",
-					color: { background: `rgb(255,${bg},${bg})` },
-					...file,
-				});
-				edges.push({ from: author.email, to: file.node_id });
+				const bg = td !== 0 ? 255 - (file.td * 255) / td : 0;
+				let fileNode = nodes.find((value) => value.id === file.path);
+				if (!fileNode) {
+					nodes.push({
+						id: file.path,
+						label: file.name,
+						group: "files",
+						color: { background: `rgb(255,${bg},${bg})` },
+						...file,
+					});
+				} else {
+					fileNode = {
+						...fileNode,
+						...file,
+						color: { background: `rgb(255,${bg},${bg})` },
+					};
+				}
+				edges.push({ from: author.email, to: file.path });
 			});
 		});
 		return { nodes, edges };
 	};
 	const { nodes, edges } = useMemo(createGraph, [data, maxTd]);
 	const [network, setNetwork] = useState(null);
-	if (network) {
-		network.fit();
-	}
 	return (
 		<div className={className}>
 			<Graph
-				graph={{ nodes: nodes, edges: edges }}
+				graph={{ nodes, edges }}
 				options={options}
 				events={events}
 				getNetwork={(network) => {
-					setNetwork(network); // todo: index change -> zomm reset
+					setNetwork(network);
 				}}
 			/>
 		</div>
 	);
 }
 
-export default Network;
+export default ProjectNetwork;

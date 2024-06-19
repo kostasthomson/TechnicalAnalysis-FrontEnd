@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host = "http://127.0.0.1:8080";
+const host = process.env.REACT_APP_HOST;
 
 export async function GetInitialCallout() {
 	const url = sessionStorage.getItem("url");
