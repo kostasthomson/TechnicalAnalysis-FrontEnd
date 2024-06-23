@@ -8,11 +8,10 @@ import {
 	DialogTitle,
 	TextField,
 } from "@mui/material";
-import { RecordType } from "../../Types/RecordType";
-import { GetInitialCallout } from "../../Utils/Callouts";
-import { createRow } from "../../Utils/Utils";
+import TableRecordType from "../../Types/TableRecordType";
+import { CalloutFunctions, UtilFunctions } from "../../Utils";
 
-function NewAnalysisModal({
+function AddNewProjectModal({
 	open,
 	rows,
 	setOpen,
@@ -20,9 +19,9 @@ function NewAnalysisModal({
 	setIsLoading,
 }: {
 	open: boolean;
-	rows: RecordType[] | null;
+	rows: TableRecordType[] | null;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	setRows: React.Dispatch<React.SetStateAction<RecordType[] | null>>;
+	setRows: React.Dispatch<React.SetStateAction<TableRecordType[] | null>>;
 	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
 	const [errorText, setErrorText] = useState<string>("");
@@ -32,34 +31,19 @@ function NewAnalysisModal({
 		setOpen(false);
 	};
 
-	const getRow = (url: string) => {
-		url = url.replace(".git", "");
-		let name: string = url.replace("https://github.com/", "");
-		return createRow(name);
-	};
-
-	const isValidURL = (input: string) => {
-		if (input.match("https://github.com/[A-Za-z0-9_]+/[A-Za-z0-9-_]+(.git)?"))
-			return true;
-		setErrorText("Invalid repository url");
-		return false;
-	};
-
 	const handleClick = (url: string) => {
 		if (!rows) return;
-		const newRow = getRow(url);
+		const newRow = UtilFunctions.getRow(url);
 		if (rows.find((value) => value.name === newRow.name)) {
 			setErrorText("Repository already analyzed");
 			return;
 		}
 		handleClose();
-		sessionStorage.setItem("url", url);
-		sessionStorage.setItem("newRow", JSON.stringify(newRow));
 		setIsLoading(true);
 		const index = rows.length;
 		let newRows = [...rows, newRow];
 		setRows(newRows);
-		GetInitialCallout()
+		CalloutFunctions.GetInitialCallout(url)
 			.then((response) => {
 				console.log(response);
 			})
@@ -88,7 +72,7 @@ function NewAnalysisModal({
 					const formData = new FormData(event.currentTarget);
 					const formObj = Object.fromEntries((formData as any).entries());
 					const url = formObj.repoUrl;
-					if (!isValidURL(url)) return;
+					if (!UtilFunctions.isValidURL(url, setErrorText)) return;
 					handleClick(url);
 				},
 			}}
@@ -119,4 +103,4 @@ function NewAnalysisModal({
 	);
 }
 
-export default NewAnalysisModal;
+export default AddNewProjectModal;

@@ -1,3 +1,3 @@
-import NewAnalysisModal from "./NewAnalysisModal";
+import AddNewProjectModal from "./AddNewProjectModal";
 
-export default NewAnalysisModal;
+export default AddNewProjectModal;

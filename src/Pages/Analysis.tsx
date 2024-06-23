@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Slider, FormControlLabel, Switch } from "@mui/material";
 import { AttributePanel, ProjectNetwork } from "../Components";
-import { DataType } from "../App";
-import { GraphNode } from "../Components/Network/ProjectNetwork";
-import {
-	GetGroupedCommitsCallout,
-	GetProjectMaxTdCallout,
-} from "../Utils/Callouts";
+import { GraphDataType, GraphNode } from "../Types/GraphTypes";
+import { CalloutFunctions } from "../Utils";
 
 function Analysis() {
-	const [data, setData] = useState<DataType[]>([]);
+	const [data, setData] = useState<GraphDataType[]>([]);
 	const [selectedNode, setSelectedNode] = useState<GraphNode | undefined>(
 		undefined
 	);
@@ -26,21 +22,15 @@ function Analysis() {
 	};
 	useEffect(() => {
 		const projectName = document.location.pathname.replace("/analysis/", "");
-		GetGroupedCommitsCallout(projectName)
+		CalloutFunctions.GetGroupedCommitsCallout(projectName)
 			.then(({ data }: any) => {
 				console.log(data);
-				setData(
-					// (result.data as DataType[]).sort(
-					// 	(group1: DataType, group2: DataType) =>
-					// 		new Date(group1.key).getTime() - new Date(group2.key).getTime()
-					// )
-					data
-				);
+				setData(data);
 			})
 			.catch((error: any) => {
 				console.log(error);
 			});
-		GetProjectMaxTdCallout(projectName)
+		CalloutFunctions.GetProjectMaxTdCallout(projectName)
 			.then(({ data }: any) => {
 				setProjectTd(data);
 			})

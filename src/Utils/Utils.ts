@@ -1,5 +1,5 @@
-import { RecordType } from "../Types/RecordType";
-import { GetExportProjectCallout, GetInitialCallout } from "./Callouts";
+import TableRecordType from "../Types/TableRecordType";
+import { CalloutFunctions } from "./";
 
 export function createRow(name: string, loading?: boolean) {
 	return {
@@ -7,15 +7,32 @@ export function createRow(name: string, loading?: boolean) {
 		actions: [
 			{ label: "view", visible: true },
 			{ label: "export", visible: true },
+			{ label: "delete", visible: true },
 			{ label: "retry", visible: false },
 		],
 		loading: loading !== undefined ? loading : true,
 	};
 }
 
+export const getRow = (url: string) => {
+	url = url.replace(".git", "");
+	let name: string = url.replace("https://github.com/", "");
+	return createRow(name);
+};
+
+export const isValidURL = (
+	input: string,
+	setErrorText: React.Dispatch<React.SetStateAction<string>>
+) => {
+	if (input.match("https://github.com/[A-Za-z0-9_]+/[A-Za-z0-9-_]+(.git)?"))
+		return true;
+	setErrorText("Invalid repository url");
+	return false;
+};
+
 export function retryInitialization(
-	rows: RecordType[] | null,
-	setRows: React.Dispatch<React.SetStateAction<RecordType[] | null>>,
+	rows: TableRecordType[] | null,
+	setRows: React.Dispatch<React.SetStateAction<TableRecordType[] | null>>,
 	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) {
 	if (!rows) return;
@@ -24,7 +41,7 @@ export function retryInitialization(
 	const index = rows.length - 1;
 	newRows[index].loading = true;
 	setRows(newRows);
-	GetInitialCallout()
+	CalloutFunctions.GetInitialCallout()
 		.then((response) => {
 			newRows[index].actions.forEach(
 				(action: { label: string; visible: boolean }) => {
@@ -43,9 +60,8 @@ export function retryInitialization(
 }
 
 export function exportProject(name: string) {
-	console.log("Exporting");
 	const fileName = name.replace("/", "_");
-	GetExportProjectCallout(fileName)
+	CalloutFunctions.GetExportProjectCallout(fileName)
 		.then((result) => {
 			console.log(result.headers);
 			const url = window.URL.createObjectURL(new Blob([result.data]));
@@ -59,5 +75,18 @@ export function exportProject(name: string) {
 		})
 		.catch((error) => {
 			console.log(error);
+		});
+}
+
+export function deleteProject(name: string) {
+	CalloutFunctions.PostProjectDelete(name)
+		.then((response) => {
+			console.log(response);
+		})
+		.catch((error) => {
+			console.log(error);
+		})
+		.finally(() => {
+			window.location.reload();
 		});
 }

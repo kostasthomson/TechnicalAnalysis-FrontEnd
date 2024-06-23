@@ -8,9 +8,9 @@ import {
 	Button,
 	CircularProgress,
 } from "@mui/material";
-import { RecordType } from "../../Types/RecordType";
+import TableRecordType from "../../Types/TableRecordType";
 import { useNavigate } from "react-router-dom";
-import { exportProject, retryInitialization } from "../../Utils/Utils";
+import { UtilFunctions } from "../../Utils";
 
 function Dashboard({
 	className,
@@ -19,18 +19,21 @@ function Dashboard({
 	setIsLoading,
 }: {
 	className: string;
-	rows: RecordType[]|null;
-	setRows: React.Dispatch<React.SetStateAction<RecordType[]|null>>;
+	rows: TableRecordType[] | null;
+	setRows: React.Dispatch<React.SetStateAction<TableRecordType[] | null>>;
 	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
 	const navigate = useNavigate();
 	const handleActionClick = (label: string, projectName: string) => {
 		switch (label.toUpperCase()) {
 			case "RETRY":
-				retryInitialization(rows, setRows, setIsLoading);
+				UtilFunctions.retryInitialization(rows, setRows, setIsLoading);
+				break;
+			case "DELETE":
+				UtilFunctions.deleteProject(projectName);
 				break;
 			case "EXPORT":
-				exportProject(projectName);
+				UtilFunctions.exportProject(projectName);
 				break;
 			case "VIEW":
 				navigate(`analysis/${projectName}`);

@@ -4,7 +4,6 @@ import { CircularProgress } from "@mui/material";
 function Loading({ loading }: { loading?: boolean }) {
 	return (
 		<div
-		// fixed inset-0 flex items-center justify-center z-20
 			className={` ${
 				loading ? "block" : "hidden"
 			}`}

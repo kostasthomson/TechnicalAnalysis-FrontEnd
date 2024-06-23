@@ -1,7 +1,13 @@
-import AttributePanel from "./AttributePanel";
+import AttributePanel from "./Panel";
 import Dashboard from "./Dashboard";
-import NewAnalysisModal from "./Modal";
+import AddNewProjectModal from "./Modal";
 import Loading from "./Loading";
 import ProjectNetwork from "./Network";
 
-export { AttributePanel, Dashboard, NewAnalysisModal, Loading, ProjectNetwork };
+export {
+	AttributePanel,
+	Dashboard,
+	AddNewProjectModal,
+	Loading,
+	ProjectNetwork,
+};
