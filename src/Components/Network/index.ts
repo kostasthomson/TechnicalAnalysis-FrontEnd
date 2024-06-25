@@ -1,3 +1,3 @@
-import ProjectNetwork from "./ProjectNetwork.jsx";
+import ProjectNetwork from "./ProjectNetwork";
 
 export default ProjectNetwork;

@@ -39,7 +39,7 @@ function Analysis() {
 			});
 	}, []);
 	return (
-		<main className="h-5/6 flex flex-col">
+		<main className="h-full w-full flex flex-col">
 			{data.length !== 0 && (
 				<>
 					<AttributePanel
@@ -69,7 +69,6 @@ function Analysis() {
 						}
 						onChange={handleSliderChange}
 					/>
-
 					<ProjectNetwork
 						className="w-full h-full"
 						data={data[sliderValue]}
