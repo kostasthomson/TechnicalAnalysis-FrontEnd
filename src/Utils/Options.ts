@@ -5,34 +5,27 @@ export const NetworkOptions = {
 	groups: {
 		authors: { color: { background: "cyan" } },
 		commits: { color: { background: "orange" } },
-		files: { color: { background: "yellow" } },
+		files: { color: { background: "red" } },
+	},
+	edges: {
+		color: "black",
 	},
 	layout: {
-		randomSeed: "0.4921169730930408:1718737341350",
+		randomSeed: 1,
 		hierarchical: {
 			enabled: true,
-			levelSeparation: 100,
-			treeSpacing: 150,
-			nodeSpacing: 150,
-			blockShifting: true,
+			levelSeparation: 200,
+			treeSpacing: 200,
+			nodeSpacing: 110,
+			blockShifting: false,
 			edgeMinimization: true,
+			parentCentralization: true,
+			direction: "LR",
 			sortMethod: "directed",
 			shakeTowards: "roots",
 		},
 	},
 	physics: {
-		enabled: true,
-		maxVelocity: 20,
-		solver: "hierarchicalRepulsion",
-		hierarchicalRepulsion: {
-			nodeDistance: 150,
-			springLength: 100,
-			springConstant: 0.06,
-			damping: 0.17,
-		},
-		stabilization: {
-			enabled: true,
-			fit: true,
-		},
+		enabled: false,
 	},
 };
