@@ -8,21 +8,11 @@ import {
 	Button,
 	CircularProgress,
 } from "@mui/material";
-import TableRecordType from "../../Types/TableRecordType";
 import { useNavigate } from "react-router-dom";
 import { UtilFunctions } from "../../Utils";
+import { DashboardType } from "../../Types/FunctionType";
 
-function Dashboard({
-	className,
-	rows,
-	setRows,
-	setIsLoading,
-}: {
-	className: string;
-	rows: TableRecordType[] | null;
-	setRows: React.Dispatch<React.SetStateAction<TableRecordType[] | null>>;
-	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+function Dashboard({ className, rows, setRows, setIsLoading }: DashboardType) {
 	const navigate = useNavigate();
 	const handleActionClick = (label: string, projectName: string) => {
 		switch (label.toUpperCase()) {
@@ -71,13 +61,15 @@ function Dashboard({
 											.map((action, index) => (
 												<Button
 													key={index}
-													variant="outlined"
 													sx={{ marginLeft: "1rem" }}
+													title={action.label.toUpperCase()}
+													variant="contained"
+													color="blue500"
 													onClick={() =>
 														handleActionClick(action.label, row.name)
 													}
 												>
-													<span>{action.label}</span>
+													<action.icon />
 												</Button>
 											))
 									)}

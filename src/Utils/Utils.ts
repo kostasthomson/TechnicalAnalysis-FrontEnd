@@ -1,14 +1,18 @@
 import TableRecordType from "../Types/TableRecordType";
 import { CalloutFunctions } from "./";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import DeleteIcon from '@mui/icons-material/Delete';
+import ReplayIcon from '@mui/icons-material/Replay';
 
 export function createRow(name: string, loading?: boolean) {
 	return {
 		name: name,
 		actions: [
-			{ label: "view", visible: true },
-			{ label: "export", visible: true },
-			{ label: "delete", visible: true },
-			{ label: "retry", visible: false },
+			{ label: "view", visible: true, icon: VisibilityIcon},
+			{ label: "export", visible: true, icon: FileDownloadIcon},
+			{ label: "delete", visible: true, icon: DeleteIcon },
+			{ label: "retry", visible: false, icon: ReplayIcon},
 		],
 		loading: loading !== undefined ? loading : true,
 	};

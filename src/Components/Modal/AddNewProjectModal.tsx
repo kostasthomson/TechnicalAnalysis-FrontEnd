@@ -8,22 +8,17 @@ import {
 	DialogTitle,
 	TextField,
 } from "@mui/material";
-import TableRecordType from "../../Types/TableRecordType";
 import { CalloutFunctions, UtilFunctions } from "../../Utils";
+import { ModalType } from "../../Types/FunctionType";
 
 function AddNewProjectModal({
+	className,
 	open,
 	rows,
 	setOpen,
 	setRows,
 	setIsLoading,
-}: {
-	open: boolean;
-	rows: TableRecordType[] | null;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	setRows: React.Dispatch<React.SetStateAction<TableRecordType[] | null>>;
-	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+}: ModalType) {
 	const [errorText, setErrorText] = useState<string>("");
 
 	const handleClose = () => {
@@ -77,18 +72,21 @@ function AddNewProjectModal({
 				},
 			}}
 		>
-			<DialogTitle>Add New Repository</DialogTitle>
-			<DialogContent>
-				<DialogContentText>
+			<DialogTitle sx={{ textAlign: "center", fontSize: "1.5rem" }}>
+				Add new project
+			</DialogTitle>
+			<DialogContent sx={{ marginLeft: "4rem", marginRight: "5rem" }}>
+				<DialogContentText sx={{ fontStyle: "italic", fontSize: "1rem" }}>
 					Provide repository's URL to analyze your project.
 				</DialogContentText>
 				<TextField
+					sx={{ marginTop: "3rem", fontSize: "1.75rem" }}
 					autoFocus
 					fullWidth
 					margin="normal"
 					id="repoUrl"
 					name="repoUrl"
-					label="Repository URL"
+					label="Repository's URL"
 					type="text"
 					variant="standard"
 					error={errorText !== ""}

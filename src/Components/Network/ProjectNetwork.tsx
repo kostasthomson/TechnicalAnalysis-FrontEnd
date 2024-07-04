@@ -3,20 +3,14 @@ import { Network, DataSet } from "vis-network/standalone";
 import { Options } from "../../Utils";
 import * as GraphTypes from "../../Types/GraphTypes";
 import { CommitEntity, AuthorEntity, FileEntity } from "../../Types/Entities";
+import { NetworkType } from "../../Types/FunctionType";
 
 function ProjectNetwork({
 	className,
 	data,
 	maxTd,
 	setSelectedNode,
-}: {
-	className?: string;
-	data: GraphTypes.GraphDataType;
-	maxTd: number | null;
-	setSelectedNode: React.Dispatch<
-		React.SetStateAction<GraphTypes.GraphNode | undefined>
-	>;
-}) {
+}: NetworkType) {
 	const networkRef = useRef(null);
 	const createGraph = () => {
 		let nodes: DataSet<GraphTypes.GraphNode> = new DataSet([]);
@@ -39,7 +33,7 @@ function ProjectNetwork({
 				});
 			}
 			// create file node
-			commit.files.forEach((file: FileEntity, id: number) => {
+			commit.files.forEach((file: FileEntity) => {
 				const opacity: number = td !== 0 ? 255 - (file.td * 255) / td : 0;
 				let fileNode = nodes.get(file.path);
 				if (!fileNode) {

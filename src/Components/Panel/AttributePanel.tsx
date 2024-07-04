@@ -1,14 +1,8 @@
 import React from "react";
-import { GraphNode } from "../../Types/GraphTypes";
 import { AuthorEntity, FileEntity } from "../../Types/Entities";
+import { PanelType } from "../../Types/FunctionType";
 
-function AttributePanel({
-	className,
-	selectedNode,
-}: {
-	className?: string;
-	selectedNode?: GraphNode;
-}) {
+function AttributePanel({ className, selectedNode }: PanelType) {
 	return (
 		<div className={className}>
 			<h4 className="font-bold uppercase text-l">Attribute Panel</h4>
