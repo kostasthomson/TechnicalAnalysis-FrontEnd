@@ -1,6 +1,6 @@
 # TechnicalAnalysis-FrontEnd
 
-Welcome to the TechnicalAnalysis-FrontEnd repository! This project is part of my Bachelor's Thesis research and it is designed to provide a comprehensive front-end application for technical analysis of software projects. The application leverages quality analysis tools and libraries to help users control and manage software's technical debt.
+Welcome to the TechnicalAnalysis-FrontEnd repository! This project is part of my Bachelor's Thesis research, and it is designed to provide a comprehensive front-end application for technical analysis of software projects. The application leverages quality analysis tools and libraries to help users control and manage software's technical debt.
 
 ## Table of Contents
 
