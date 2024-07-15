@@ -16,94 +16,40 @@ function AttributePanel({ className, selectedNode }: PanelType) {
 							<p>Path: {(selectedNode.entity as FileEntity).path}</p>
 							<p>
 								TD (in minutes):
-								<span
-									className={
-										(selectedNode.entity as FileEntity).td ? "" : "italic"
-									}
-								>
-									{(selectedNode.entity as FileEntity).td
-										? " " + (selectedNode.entity as FileEntity).td
-										: " <No value>"}
-								</span>
+								<span>{" " + (selectedNode.entity as FileEntity).td}</span>
 							</p>
 							<p>
 								Complexity:
-								<span
-									className={
-										(selectedNode.entity as FileEntity).complexity
-											? ""
-											: "italic"
-									}
-								>
-									{(selectedNode.entity as FileEntity).complexity
-										? " " + (selectedNode.entity as FileEntity).complexity
-										: " <No value>"}
+								<span>
+									{" " + (selectedNode.entity as FileEntity).complexity}
 								</span>
 							</p>
 							<p>
 								Code smells:
-								<span
-									className={
-										(selectedNode.entity as FileEntity).codeSmells
-											? ""
-											: "italic"
-									}
-								>
-									{(selectedNode.entity as FileEntity).codeSmells
-										? " " + (selectedNode.entity as FileEntity).codeSmells
-										: " <No value>"}
+								<span>
+									{" " + (selectedNode.entity as FileEntity).codeSmells}
 								</span>
 							</p>
 							<p>
 								Functions:
-								<span
-									className={
-										(selectedNode.entity as FileEntity).functions
-											? ""
-											: "italic"
-									}
-								>
-									{(selectedNode.entity as FileEntity).functions
-										? " " + (selectedNode.entity as FileEntity).functions
-										: " <No value>"}
+								<span>
+									{" " + (selectedNode.entity as FileEntity).functions}
 								</span>
 							</p>
 							<p>
 								LOC:
-								<span
-									className={
-										(selectedNode.entity as FileEntity).loc ? "" : "italic"
-									}
-								>
-									{(selectedNode.entity as FileEntity).loc
-										? " " + (selectedNode.entity as FileEntity).loc
-										: " <No value>"}
-								</span>
+								<span>{" " + (selectedNode.entity as FileEntity).loc}</span>
 							</p>
 							<p>
 								Commented lines:
-								<span
-									className={
-										(selectedNode.entity as FileEntity).commentLines
-											? ""
-											: "italic"
-									}
-								>
-									{(selectedNode.entity as FileEntity).commentLines
-										? " " + (selectedNode.entity as FileEntity).commentLines
-										: " <No value>"}
+								<span>
+									{" " + (selectedNode.entity as FileEntity).commentLines}
 								</span>
 							</p>
 							<p>
 								Number of files:
-								<span
-									className={
-										(selectedNode.entity as FileEntity).numFiles ? "" : "italic"
-									}
-								>
-									{(selectedNode.entity as FileEntity).numFiles
-										? " " + (selectedNode.entity as FileEntity).numFiles
-										: " <No value>"}
+								<span>
+									{" " + (selectedNode.entity as FileEntity).numFiles}
 								</span>
 							</p>
 							<p>
@@ -113,7 +59,7 @@ function AttributePanel({ className, selectedNode }: PanelType) {
 										(selectedNode.entity as FileEntity).tags ? "" : "italic"
 									}
 								>
-									{(selectedNode.entity as FileEntity).tags
+									{(selectedNode.entity as FileEntity).tags.length !== 0
 										? " " + (selectedNode.entity as FileEntity).tags.join(", ")
 										: " <No tags>"}
 								</span>
