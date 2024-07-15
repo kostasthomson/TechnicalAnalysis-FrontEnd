@@ -17,7 +17,7 @@ function Home() {
 	useEffect(() => {
 		CalloutFunctions.GetProjectsCallout()
 			.then((result) => {
-				let data = result.data.map((project: any) => {
+				let data: TableRecordType[] = result.data.map((project: any) => {
 					return UtilFunctions.createRow(project.name, false);
 				});
 				setRows(data);
